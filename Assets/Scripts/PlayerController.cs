@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour {
     public float xVelocity, yVelocity;
     public float moveSpeed;
 
+    // animation
+    private Animator myAnimator;
+
 
     private string inputAxisX, inputAxisY;
 
@@ -22,13 +25,16 @@ public class PlayerController : MonoBehaviour {
         inputAxisX = "HorizontalP1";
         inputAxisY = "VerticalP1";
         myRigidbody2D = GetComponent<Rigidbody2D>();
-        error = 0;
+        myAnimator = GetComponent<Animator>();
+        error = .2f;
+
     }
 	
 	void Update ()
     {
         Move();
 
+        myAnimator.SetFloat("speed", xVelocity);
         //xVelocity = 0;
         //yVelocity = 0;
         //myRigidbody2D.velocity = new Vector2(0f, myRigidbody2D.velocity.y);
