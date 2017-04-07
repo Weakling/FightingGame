@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour {
         yVelocity = Input.GetAxisRaw(inputAxisY);
 
         myRigidbody2D.velocity = new Vector2(xVelocity * moveSpeed, myRigidbody2D.velocity.y);
+
+
         // right..
         /*if(xVelocity > error)
         {
