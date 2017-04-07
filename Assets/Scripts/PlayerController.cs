@@ -11,12 +11,13 @@ public class PlayerController : MonoBehaviour {
     private float moveVelocity;
     public float xVelocity, yVelocity;
     public float moveSpeed;
+    public bool isCrouched;
 
     // animation
     private Animator myAnimator;
 
 
-    private string inputAxisX, inputAxisY;
+    private string inputAxisX, inputAxisY, inputAxisA;
 
     private Rigidbody2D myRigidbody2D;
 
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour {
     {
         inputAxisX = "HorizontalP1";
         inputAxisY = "VerticalP1";
+        inputAxisA = "A1";
         myRigidbody2D = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         error = .2f;
@@ -33,8 +35,8 @@ public class PlayerController : MonoBehaviour {
 	void Update ()
     {
         Move();
-
-        myAnimator.SetFloat("speed", xVelocity);
+        SetAnimations();
+        
         //xVelocity = 0;
         //yVelocity = 0;
         //myRigidbody2D.velocity = new Vector2(0f, myRigidbody2D.velocity.y);
@@ -44,21 +46,58 @@ public class PlayerController : MonoBehaviour {
 
     private void Move()
     {
+        // set axis inputs
         xVelocity = Input.GetAxisRaw(inputAxisX);
         yVelocity = Input.GetAxisRaw(inputAxisY);
 
-        myRigidbody2D.velocity = new Vector2(xVelocity * moveSpeed, myRigidbody2D.velocity.y);
-
-
-        // right..
-        /*if(xVelocity > error)
+        // is crouched..
+        if(yVelocity < -error)
         {
-            myRigidbody2D.velocity = new Vector2(moveSpeed, myRigidbody2D.velocity.y);
+            isCrouched = true;
         }
-        // left..
-        if (xVelocity < -error)
+        else
         {
-            myRigidbody2D.velocity = new Vector2(-moveSpeed, myRigidbody2D.velocity.y);
-        }*/
+            isCrouched = false;
+        }
+
+        if(isCrouched)
+        {
+            if (Input.GetButtonDown(inputAxisA))
+            {
+                Debug.Log("moo");
+                myAnimator.SetBool("2A", true);
+            }
+        }
+
+        // apply movement
+        myRigidbody2D.velocity = new Vector2(xVelocity * moveSpeed, myRigidbody2D.velocity.y);
+    }
+
+    // set animations
+    private void SetAnimations()
+    {
+        // walking animation
+        myAnimator.SetFloat("speed", xVelocity);
+
+        // crouch animation
+        myAnimator.SetBool("crouched", isCrouched);
+    }
+
+    // animation (go to sitting from idle)
+    public void SittingDown()
+    {
+        myAnimator.SetBool("standingUp", false);
+    }
+
+    // animation (go to idle from sitting)
+    public void StandingUp()
+    {
+        myAnimator.SetBool("standingUp", true);
+    }
+
+    // animation (exit 2A)
+    public void ExitAttack()
+    {
+        myAnimator.SetBool("2A", false);
     }
 }
