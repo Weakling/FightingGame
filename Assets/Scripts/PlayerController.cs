@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour {
 
     public float error;
 
+    private bool exitLight;
+
     private float moveVelocity;
     public float xVelocity, yVelocity;
     public float moveSpeed;
@@ -29,6 +31,7 @@ public class PlayerController : MonoBehaviour {
         myRigidbody2D = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         error = .2f;
+        exitLight = true;
 
     }
 	
@@ -62,10 +65,15 @@ public class PlayerController : MonoBehaviour {
 
         if(isCrouched)
         {
+            // 2A
             if (Input.GetButtonDown(inputAxisA))
             {
-                Debug.Log("moo");
-                myAnimator.SetBool("2A", true);
+                //if(exitLight)
+                {
+                    TwoA();
+                    //exitLight = false;
+                }
+                
             }
         }
 
@@ -80,13 +88,14 @@ public class PlayerController : MonoBehaviour {
         myAnimator.SetFloat("speed", xVelocity);
 
         // crouch animation
-        myAnimator.SetBool("crouched", isCrouched);
+        myAnimator.SetBool("crouching", isCrouched);
     }
 
-    // animation (go to sitting from idle)
-    public void SittingDown()
+    // animation (go to sitting down from idle)
+    public void NotStandingUp()
     {
         myAnimator.SetBool("standingUp", false);
+        myAnimator.SetBool("crouched", false);
     }
 
     // animation (go to idle from sitting)
@@ -95,9 +104,21 @@ public class PlayerController : MonoBehaviour {
         myAnimator.SetBool("standingUp", true);
     }
 
+    // animation (go to idle crouch from sitting)
+    public void Crouched()
+    {
+        myAnimator.SetBool("crouched", true);
+    }
+
+    public void TwoA()
+    {
+        myAnimator.SetBool("2A", true);
+    }
+
     // animation (exit 2A)
-    public void ExitAttack()
+    public void ExitLightAttack()
     {
         myAnimator.SetBool("2A", false);
+        //exitLight = true;
     }
 }
