@@ -121,4 +121,9 @@ public class PlayerController : MonoBehaviour {
         myAnimator.SetBool("2A", false);
         //exitLight = true;
     }
+
+    //float deadzone = 0.25f;
+    //Vector2 stickInput = new Vector2(Input.GetAxis(“Horizontal”), Input.GetAxis(“Vertical”));
+    //if(stickInput.magnitude<deadzone)
+        //stickInput = Vector2.zero;
 }
